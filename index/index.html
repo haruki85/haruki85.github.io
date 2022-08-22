@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>画面共有
+    </title>
+    <script src="https://cdn.webrtc.ecl.ntt.com/skyway-4.4.5.js">
+    </script>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <script src="/index.js"></script>
+    <div class="container">
+        <p class="heading">以下の画面が配信サーバーと共有されます。</p>
+        <video id="capture" width="400px" autoplay muted playsinline></video>
+        <p id="my-id"></p>
+        <script>
+            let localStream;
+                // カメラ映像取得
+                navigator.mediaDevices.getDisplayMedia({video: { width: 1920, height: 1080}, audio: true})
+                    .then( stream => {
+                    // 成功時にvideo要素にカメラ映像をセットし、再生
+                    const videoElm = document.getElementById('capture');
+                    videoElm.srcObject = stream;
+                    videoElm.play();
+                    // 着信時に相手にカメラ映像を返せるように、グローバル変数に保存しておく
+                    localStream = stream;
+                }).catch( error => {
+                    // 失敗時にはエラーログを出力
+                    console.error('mediaDevice.getUserMedia() error:', error);
+                    return;
+                });
+        </script>
+      <button id="peerID">共有開始</button>
+  </body>
+</html>
+
